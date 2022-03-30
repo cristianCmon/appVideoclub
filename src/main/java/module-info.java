@@ -7,4 +7,6 @@ module com.example.appvideoclub {
 
     opens com.example.appvideoclub to javafx.fxml;
     exports com.example.appvideoclub;
+    exports com.example.appvideoclub.View;
+    opens com.example.appvideoclub.View to javafx.fxml;
 }
