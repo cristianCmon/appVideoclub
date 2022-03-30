@@ -3,20 +3,29 @@ package com.example.appvideoclub;
 import com.example.appvideoclub.Controller.VideoClubController;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 
-public class HelloController {
+public class LoginController {
     @FXML
-    private Label welcomeText;
+    private Label txtMsg;
+    @FXML
+    private TextField txtNombre;
+    @FXML
+    private PasswordField txtPassword;
+
 
     @FXML
     protected void onHelloButtonClick() {
         VideoClubController vc=new VideoClubController();
         String texto="";
-        if(vc.login("admin","1234")) {
+        String nombre=txtNombre.getText();
+        String pass=txtPassword.getText();
+        if(vc.login(nombre,pass)) {
             texto="login ok "+vc.nombreUsuario()+" "+vc.getRol();
         } else {
             texto="error en el login";
         }
-        welcomeText.setText(texto);
+        txtMsg.setText(texto);
     }
 }
