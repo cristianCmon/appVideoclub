@@ -3,10 +3,9 @@ package com.example.appvideoclub.Controller;
 import com.example.appvideoclub.Modelo.Conexion;
 import com.example.appvideoclub.Modelo.Usuario;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VideoClubController {
     private Usuario usuarioLogeado;
@@ -41,6 +40,58 @@ public class VideoClubController {
         }
         return  false;
     }
+
+    public List<String> getPerfiles(){
+        List<String> perfiles = new ArrayList<>();
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        try{
+            String consulta = "SELECT rol FROM roles";
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(consulta);
+            while (rs.next()){
+                perfiles.add(rs.getString("rol"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return perfiles;
+    }
+
+    public String crearUsuario(String nombre, String pass, String perfil){
+        String mensaje="Error al crear el usuario.";
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sql="INSERT INTO usuarios (nombre,password,idrol) VALUES (?,?,?)";
+        int idrol;
+        try{
+            PreparedStatement stm=conn.prepareStatement(sql);
+            stm.setString(1,nombre);
+            stm.setString(2,pass);
+            String sqlPerfil="SELECT idroles FROM roles WHERE rol=?";
+            PreparedStatement statement = conn.prepareStatement(sqlPerfil);
+            statement.setString(1,perfil);
+            ResultSet rs=statement.executeQuery();
+            if(rs.next()) {
+                idrol = rs.getInt("idroles");
+                stm.setInt(3,idrol);
+                int resultset = stm.executeUpdate();
+                if(resultset>0){
+                    mensaje = "Usuario creado";
+                } else {
+                    mensaje = "Error al crear el usuario.";
+                }
+            }
+            statement.close();
+            stm.close();
+            conn.close();
+        } catch (SQLException e){
+            e.printStackTrace();
+            mensaje="Error al conectar con la base de datos";
+        }
+        return mensaje;
+    }
+
     public String getRol(){
         if(usuarioLogeado!=null)
             return usuarioLogeado.getRol();

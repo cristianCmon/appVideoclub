@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 
@@ -14,6 +15,7 @@ public class VideoClubApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("App VideoClub");
         stage.setScene(scene);
+        scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         stage.show();
     }
 
