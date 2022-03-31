@@ -29,7 +29,7 @@ public class LoginController {
         String pass=txtPassword.getText();
         if(vc.login(nombre,pass)){
            if(vc.getRol().equals("ADMIN")){
-               FXMLLoader loader = new FXMLLoader(getClass().getResource("/admin-view.fxml"));
+               FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/admin-view.fxml"));
                Parent root = null;
                try {
                    root = loader.load();
@@ -45,7 +45,20 @@ public class LoginController {
                }
 
            }else{
-
+               FXMLLoader loader = new FXMLLoader(getClass().getResource("/views/empleado-view.fxml"));
+               Parent root = null;
+               try {
+                   root = loader.load();
+                   EmpleadoController empleadoController=loader.getController();
+                   empleadoController.setVc(vc);
+                   Scene scene=new Scene(root);
+                   Stage stage=new Stage();
+                   stage.initModality(Modality.APPLICATION_MODAL);
+                   stage.setScene(scene);
+                   stage.show();
+               } catch (IOException e) {
+                   e.printStackTrace();
+               }
            }
         }else{
             texto="error en el login";

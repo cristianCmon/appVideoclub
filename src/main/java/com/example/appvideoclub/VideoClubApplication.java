@@ -10,7 +10,7 @@ import java.io.IOException;
 public class VideoClubApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(VideoClubApplication.class.getResource("login-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(VideoClubApplication.class.getResource("/views/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         stage.setTitle("App VideoClub");
         stage.setScene(scene);
