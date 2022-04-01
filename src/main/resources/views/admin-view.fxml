@@ -17,10 +17,12 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="854.0" styleClass="panel" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.AdminController">
    <children>
-      <TableView fx:id="tblUsuarios" layoutX="465.0" layoutY="148.0" prefHeight="362.0" prefWidth="329.0" styleClass="table">
+      <TableView fx:id="tblUsuarios" layoutX="414.0" layoutY="148.0" prefHeight="362.0" prefWidth="411.0" styleClass="table">
         <columns>
-          <TableColumn fx:id="cNombre" prefWidth="156.0" text="C1" />
-          <TableColumn fx:id="cRol" prefWidth="172.800048828125" text="C2" />
+          <TableColumn fx:id="cId" prefWidth="62.4000244140625" text="id" />
+          <TableColumn fx:id="cNombre" prefWidth="168.79998779296875" text="Nombre" />
+            <TableColumn fx:id="cRol" minWidth="0.0" prefWidth="103.19989013671875" text="Perfil" />
+            <TableColumn fx:id="cOP" minWidth="0.0" prefWidth="80.79986572265625" text="OP" />
         </columns>
       </TableView>
       <Pane layoutX="51.0" layoutY="116.0" prefHeight="410.0" prefWidth="342.0" styleClass="panel">

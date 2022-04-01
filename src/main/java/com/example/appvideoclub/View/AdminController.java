@@ -1,12 +1,16 @@
 package com.example.appvideoclub.View;
 
 import com.example.appvideoclub.Controller.VideoClubController;
+import com.example.appvideoclub.Modelo.UsuarioDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class AdminController extends PadreController {
@@ -20,6 +24,10 @@ public class AdminController extends PadreController {
     protected Label lblMensaje;
     @FXML
     protected MenuButton menuUsr;
+    @FXML
+    protected TableColumn cId,cNombre,cRol,cOP;
+    @FXML
+    protected TableView tblUsuarios;
 
     public void cargarPerfiles(){
         menuUsr.setText(vc.nombreUsuario());
@@ -29,6 +37,21 @@ public class AdminController extends PadreController {
             data.add(perfile.get(i));
         }
         selectPerfil.setItems(data);
+        ResultSet rs= vc.getAllUsuarios();
+        cId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        cNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
+        cRol.setCellValueFactory(new PropertyValueFactory<>("rol"));
+        ObservableList<UsuarioDTO> usuarios=FXCollections.observableArrayList();
+        try {
+        while(rs.next()){
+                usuarios.add(new UsuarioDTO(rs.getInt("id"),rs.getString("nombre"),rs.getString("rol")));
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        tblUsuarios.setItems(usuarios);
+
+
     }
 
     @FXML
