@@ -14,13 +14,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="800.0" styleClass="panel" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.AdminController">
    <children>
       <TableView fx:id="tblUsuarios" layoutX="452.0" layoutY="138.0" prefHeight="324.0" prefWidth="316.0">
         <columns>
-          <TableColumn fx:id="cNombre" prefWidth="158.0" text="C1" />
-          <TableColumn fx:id="cRol" prefWidth="157.0" text="C2" />
+          <TableColumn fx:id="cid" prefWidth="51.0" text="ID" />
+          <TableColumn fx:id="cnombre" prefWidth="117.0" text="NOMBRE" />
+            <TableColumn fx:id="crol" prefWidth="78.0" text="PERFIL" />
+            <TableColumn fx:id="cop" prefWidth="69.0" text="OP" />
         </columns>
       </TableView>
       <Pane layoutX="87.0" layoutY="101.0" prefHeight="433.0" prefWidth="316.0">

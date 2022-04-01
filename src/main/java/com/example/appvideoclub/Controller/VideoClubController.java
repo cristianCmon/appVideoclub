@@ -103,4 +103,18 @@ public class VideoClubController {
             return usuarioLogeado.getNombre();
         else return "";
     }
+
+    public ResultSet getAllUsuarios(){
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sql= "SELECT idusuarios as id, nombre, rol from usuarios T0 inner join roles T1 on T0.idrol=T1.idroles;";
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sql);
+            return rs;
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
