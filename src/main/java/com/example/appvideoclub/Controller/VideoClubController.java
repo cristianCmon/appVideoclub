@@ -108,15 +108,33 @@ public class VideoClubController {
     public ResultSet getAllUsuarios(){
         Conexion cn=new Conexion("localhost","videoclub","root","");
         Connection conn=cn.conectar();
-        String sql="select idusuarios as id,nombre,rol from usuarios T0 inner join roles T1 on T0.idrol=T1.idroles;";
+        String sql="select idusuarios,nombre,rol from usuarios T0 inner join roles T1 on T0.idrol=T1.idroles;";
         try {
             Statement stm=conn.createStatement();
             ResultSet rs=stm.executeQuery(sql);
+            //stm.close();
+            //conn.close();
             return rs;
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public void borrarUsuario(int idusuarios) {
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sql="delete from usuarios where idusuarios=?;";
+
+        try {
+            PreparedStatement stm=conn.prepareStatement(sql);
+            stm.setInt(1,idusuarios);
+            stm.executeUpdate();
+            //stm.close();
+            //conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

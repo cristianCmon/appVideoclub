@@ -12,10 +12,21 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -37,7 +48,7 @@ public class AdminController extends PadreController {
     protected TableView tblUsuarios;
 
     //TABLE VIEW AND DATA
-    private ObservableList<ObservableList> usuarios;
+    private ObservableList<UsuarioDTO> usuarios;
 
     public void cargarPerfiles() {
         menuUsr.setText(vc.nombreUsuario());
@@ -59,32 +70,20 @@ public class AdminController extends PadreController {
                 //We are using non property style for making dynamic table
                 final int j = i;
                 TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
-                col.prefWidthProperty().bind(tblUsuarios.widthProperty().multiply(0.30));
-                col.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ObservableList, String>, ObservableValue<String>>() {
-                    public ObservableValue<String> call(TableColumn.CellDataFeatures<ObservableList, String> param) {
-                        return new SimpleStringProperty(param.getValue().get(j).toString());
-                    }
-                });
+                col.prefWidthProperty().bind(tblUsuarios.widthProperty().multiply(0.25));
+                col.setCellValueFactory(new PropertyValueFactory<>(rs.getMetaData().getColumnName(i+1)));
                 tblUsuarios.getColumns().addAll(col);
             }
             //Añadimos una columna para las acciones
             TableColumn<UsuarioDTO, Void> colBtn = new TableColumn("OP");
-            colBtn.prefWidthProperty().bind(tblUsuarios.widthProperty().multiply(0.10));
+            colBtn.prefWidthProperty().bind(tblUsuarios.widthProperty().multiply(0.25));
 
             Callback<TableColumn<UsuarioDTO, Void>, TableCell<UsuarioDTO, Void>> cellFactory = new Callback<TableColumn<UsuarioDTO, Void>, TableCell<UsuarioDTO, Void>>() {
                 @Override
                 public TableCell<UsuarioDTO, Void> call(final TableColumn<UsuarioDTO, Void> param) {
                     final TableCell<UsuarioDTO, Void> cell = new TableCell<UsuarioDTO, Void>() {
-
-                        private final Button btn = new Button("Delete");
-
-
-                        {
-                            btn.setOnAction((ActionEvent event) -> {
-                                System.out.println(getTableView().getItems().get(getIndex()).toString());
-
-                            });
-                        }
+                        private final Button btn = new Button();
+                        private final Button btnEdit=new Button();
 
                         @Override
                         public void updateItem(Void item, boolean empty) {
@@ -92,7 +91,32 @@ public class AdminController extends PadreController {
                             if (empty) {
                                 setGraphic(null);
                             } else {
+                                //Creating a graphic (image)
+                                Image img = new Image(String.valueOf(getClass().getResource("/images/trash.png")));
+                                ImageView view = new ImageView(img);
+                                view.setFitHeight(20);
+                                view.setPreserveRatio(true);
+                                //Setting a graphic to the button
+                                btn.setGraphic(view);
                                 setGraphic(btn);
+                                Image imgEdit = new Image(String.valueOf(getClass().getResource("/images/edit.png")));
+                                ImageView viewEdit = new ImageView(imgEdit);
+                                viewEdit.setFitHeight(20);
+                                viewEdit.setPreserveRatio(true);
+                                //Setting a graphic to the button
+                                btnEdit.setGraphic(viewEdit);
+                                HBox pane = new HBox(btn, btnEdit);
+
+                                //Añadimos funcionalidad a los botones
+                                btn.setOnAction((ActionEvent event) -> {
+                                    vc.borrarUsuario(getTableView().getItems().get(getIndex()).getIdusuarios());
+                                    actualizarDatosTabla();
+                                });
+                                btnEdit.setOnAction((ActionEvent event)->{
+                                    editar(getTableView().getItems().get(getIndex()).getNombre());
+                                    System.out.println("Editar");
+                                });
+                                setGraphic(pane);
                             }
                         }
                     };
@@ -105,19 +129,15 @@ public class AdminController extends PadreController {
             tblUsuarios.getColumns().add(colBtn);
 
 
+
             /********************************
              * Data added to ObservableList *
              ********************************/
+
             while(rs.next()){
                 //Iterate Row
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for(int i=1 ; i<=rs.getMetaData().getColumnCount(); i++){
-                    //Iterate Column
-                    row.add(rs.getString(i));
-                }
-
-                System.out.println("Row [1] added "+row );
-                usuarios.add(row);
+                UsuarioDTO usuarioDTO=new UsuarioDTO(rs.getInt("idusuarios"),rs.getString("nombre"),rs.getString("rol"));
+                usuarios.add(usuarioDTO);
 
             }
 
@@ -129,6 +149,10 @@ public class AdminController extends PadreController {
             System.out.println("Error on Building Data");
         }
 
+    }
+
+    private void editar(String nombre) {
+        this.txtNombre.setText(nombre);
     }
 
     @FXML
@@ -145,11 +169,45 @@ public class AdminController extends PadreController {
             txtNombre.setText("");
             pass.setText("");
             repass.setText("");
+            actualizarDatosTabla();
+
+        }
+    }
+
+    private void actualizarDatosTabla() {
+        ResultSet rs = vc.getAllUsuarios();
+        usuarios.clear();
+        try {
+            while (rs.next()) {
+                UsuarioDTO usuarioDTO=new UsuarioDTO(rs.getInt("idusuarios"),rs.getString("nombre"),rs.getString("rol"));
+                usuarios.add(usuarioDTO);
+            }
+            tblUsuarios.setItems(usuarios);
+        }catch (Exception exception){
+            exception.printStackTrace();
         }
     }
 
     @FXML
     protected void btnSalir(ActionEvent evt){
+        Stage stageP = (Stage) this.menuUsr.getScene().getWindow();
+        stageP.close();
+        FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("/views/login-view.fxml"));
 
+        Parent root = null;
+        try {
+            root = loader.load();
+            Scene scene=new Scene(root,320,240);
+            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+            Stage stage=new Stage();
+            stage.setTitle("App VideoClub");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

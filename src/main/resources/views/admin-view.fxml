@@ -7,7 +7,6 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.PasswordField?>
-<?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -15,13 +14,9 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane prefHeight="600.0" prefWidth="854.0" styleClass="panel" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.AdminController">
+<AnchorPane prefHeight="600.0" prefWidth="955.0" styleClass="panel" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.AdminController">
    <children>
-      <TableView fx:id="tblUsuarios" layoutX="414.0" layoutY="148.0" prefHeight="362.0" prefWidth="411.0" styleClass="table">
-        <columns>
-
-        </columns>
-      </TableView>
+      <TableView fx:id="tblUsuarios" layoutX="414.0" layoutY="148.0" prefHeight="362.0" prefWidth="527.0" styleClass="table" />
       <Pane layoutX="51.0" layoutY="116.0" prefHeight="410.0" prefWidth="342.0" styleClass="panel">
          <children>
             <TextField fx:id="txtNombre" layoutX="171.0" layoutY="46.0" />
@@ -46,7 +41,7 @@
             <Font name="System Bold" size="48.0" />
          </font>
       </Label>
-      <MenuButton fx:id="menuUsr" layoutX="745.0" layoutY="14.0" mnemonicParsing="false" text="MenuButton">
+      <MenuButton fx:id="menuUsr" layoutX="857.0" mnemonicParsing="false" text="MenuButton">
         <items>
           <MenuItem mnemonicParsing="false" onAction="#btnSalir" text="Salir" />
         </items>
