@@ -19,10 +19,7 @@
    <children>
       <TableView fx:id="tblUsuarios" layoutX="414.0" layoutY="148.0" prefHeight="362.0" prefWidth="411.0" styleClass="table">
         <columns>
-          <TableColumn fx:id="cId" prefWidth="62.4000244140625" text="id" />
-          <TableColumn fx:id="cNombre" prefWidth="168.79998779296875" text="Nombre" />
-            <TableColumn fx:id="cRol" minWidth="0.0" prefWidth="103.19989013671875" text="Perfil" />
-            <TableColumn fx:id="cOP" minWidth="0.0" prefWidth="80.79986572265625" text="OP" />
+
         </columns>
       </TableView>
       <Pane layoutX="51.0" layoutY="116.0" prefHeight="410.0" prefWidth="342.0" styleClass="panel">
