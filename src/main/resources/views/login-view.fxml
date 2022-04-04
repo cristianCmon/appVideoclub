@@ -15,7 +15,7 @@
     </padding>
    <AnchorPane prefHeight="200.0" prefWidth="200.0">
       <children>
-          <Button layoutX="113.0" layoutY="138.0" onAction="#onLoginButtonClick" prefHeight="26.0" prefWidth="150.0" text="Login">
+          <Button focusTraversable="false" layoutX="113.0" layoutY="138.0" onAction="#onLoginButtonClick" prefHeight="26.0" prefWidth="150.0" text="Login">
             <styleClass>
                <String fx:value="btn" />
                <String fx:value="btn-success" />

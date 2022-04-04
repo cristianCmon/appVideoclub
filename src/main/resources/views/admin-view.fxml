@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane prefHeight="600.0" prefWidth="955.0" styleClass="panel" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.AdminController">
    <children>
       <TableView fx:id="tblUsuarios" layoutX="414.0" layoutY="148.0" prefHeight="362.0" prefWidth="527.0" styleClass="table" />
@@ -23,7 +22,7 @@
             <PasswordField fx:id="repass" layoutX="161.0" layoutY="165.0" prefHeight="25.0" prefWidth="159.0" />
             <PasswordField fx:id="pass" layoutX="161.0" layoutY="132.0" prefHeight="25.0" prefWidth="159.0" />
             <ChoiceBox fx:id="selectPerfil" layoutX="170.0" layoutY="81.0" prefWidth="150.0" />
-            <Button layoutX="110.0" layoutY="217.0" mnemonicParsing="false" onAction="#btnCrearUsuario" prefHeight="25.0" prefWidth="210.0" text="Crear Usuario">
+            <Button fx:id="btnAccion" layoutX="110.0" layoutY="217.0" mnemonicParsing="false" onAction="#btnCrearUsuario" prefHeight="25.0" prefWidth="210.0" text="Crear Usuario">
                <styleClass>
                   <String fx:value="btn" />
                   <String fx:value="btn-success" />
@@ -31,8 +30,8 @@
             </Button>
             <Label layoutX="24.0" layoutY="50.0" text="Nombre de Usuario" />
             <Label layoutX="24.0" layoutY="85.0" text="Perfil" />
-            <Label layoutX="26.0" layoutY="136.0" text="Contraseña" />
-            <Label layoutX="26.0" layoutY="169.0" text="Confirmar Contraseña" />
+            <Label fx:id="lblPass" layoutX="26.0" layoutY="136.0" text="Contraseña" />
+            <Label fx:id="lblRepass" layoutX="26.0" layoutY="169.0" text="Confirmar Contraseña" />
             <Label fx:id="lblMensaje" layoutX="23.0" layoutY="280.0" />
          </children>
       </Pane>

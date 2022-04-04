@@ -1,19 +1,11 @@
 package com.example.appvideoclub.View;
 
-import com.example.appvideoclub.Controller.VideoClubController;
-import com.example.appvideoclub.Modelo.Registro;
-import com.example.appvideoclub.Modelo.TipodatosResultset;
-import com.example.appvideoclub.Modelo.Usuario;
 import com.example.appvideoclub.Modelo.UsuarioDTO;
-import javafx.beans.binding.ObjectBinding;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -28,8 +20,6 @@ import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 public class AdminController extends PadreController {
@@ -40,25 +30,27 @@ public class AdminController extends PadreController {
     @FXML
     protected PasswordField pass,repass;
     @FXML
-    protected Label lblMensaje;
+    protected Label lblMensaje,lblPass,lblRepass;
     @FXML
     protected MenuButton menuUsr;
-
+    @FXML
+    protected Button btnAccion;
     @FXML
     protected TableView tblUsuarios;
 
     //TABLE VIEW AND DATA
     private ObservableList<UsuarioDTO> usuarios;
+    private UsuarioDTO usuarioEditar;
 
     public void cargarPerfiles() {
         menuUsr.setText(vc.nombreUsuario());
         ObservableList<String> data = FXCollections.observableArrayList();
-        usuarios=FXCollections.observableArrayList();
         List<String> perfile = vc.getPerfiles();
         for (int i = 0; i < perfile.size(); i++) {
             data.add(perfile.get(i));
         }
         selectPerfil.setItems(data);
+        usuarios=FXCollections.observableArrayList();
         try {
             ResultSet rs = vc.getAllUsuarios();
 
@@ -68,7 +60,6 @@ public class AdminController extends PadreController {
 
             for (int i = 0; i < rs.getMetaData().getColumnCount(); i++) {
                 //We are using non property style for making dynamic table
-                final int j = i;
                 TableColumn col = new TableColumn(rs.getMetaData().getColumnName(i + 1));
                 col.prefWidthProperty().bind(tblUsuarios.widthProperty().multiply(0.25));
                 col.setCellValueFactory(new PropertyValueFactory<>(rs.getMetaData().getColumnName(i+1)));
@@ -112,9 +103,9 @@ public class AdminController extends PadreController {
                                     vc.borrarUsuario(getTableView().getItems().get(getIndex()).getIdusuarios());
                                     actualizarDatosTabla();
                                 });
-                                btnEdit.setOnAction((ActionEvent event)->{
-                                    editar(getTableView().getItems().get(getIndex()).getNombre());
-                                    System.out.println("Editar");
+                                btnEdit.setOnAction((ActionEvent event) -> {
+                                    usuarioEditar=getTableView().getItems().get(getIndex());
+                                    editar();
                                 });
                                 setGraphic(pane);
                             }
@@ -151,27 +142,60 @@ public class AdminController extends PadreController {
 
     }
 
-    private void editar(String nombre) {
-        this.txtNombre.setText(nombre);
+    private void editar() {
+        this.txtNombre.setText(usuarioEditar.getNombre());
+        for (int i = 0; i < selectPerfil.getItems().size(); i++) {
+            if(selectPerfil.getItems().get(i).equals(usuarioEditar.getRol())){
+                selectPerfil.getSelectionModel().select(i);
+            }
+        }
+        pass.setVisible(false);
+        repass.setVisible(false);
+        lblPass.setVisible(false);
+        lblRepass.setVisible(false);
+        btnAccion.setText("Editar Usuario");
+        btnAccion.getStyleClass().removeAll();
+        btnAccion.getStyleClass().add("bnt");
+        btnAccion.getStyleClass().add("btn-warning");
     }
 
     @FXML
     protected void btnCrearUsuario(){
         String nombre=txtNombre.getText();
         String perfil= (String) selectPerfil.getValue();
-        String password=pass.getText();
-        String repassword=repass.getText();
-        if(nombre.equals("") || perfil==null || ! password.equals(repassword)){
-            lblMensaje.setText("Datos incorrectos");
-        }else{
-            String msg = vc.crearUsuario(nombre,password,perfil);
-            lblMensaje.setText(msg);
-            txtNombre.setText("");
-            pass.setText("");
-            repass.setText("");
-            actualizarDatosTabla();
+        if(usuarioEditar!=null){
+            if(perfil.equals(usuarioEditar.getRol())){
+                lblMensaje.setText("No hay cambios");
+            }else{
+                String msg=vc.editarUsuario(usuarioEditar.getIdusuarios(),perfil);
+                usuarioEditar=null;
+                lblRepass.setVisible(true);
+                lblPass.setVisible(true);
+                btnAccion.setText("Crear Usuario");
+                btnAccion.getStyleClass().removeAll();
+                btnAccion.getStyleClass().add("btn");
+                btnAccion.getStyleClass().add("btn-success");
+                pass.setVisible(true);
+                repass.setVisible(true);
 
+            }
+        }else{
+            String password=pass.getText();
+            String repassword=repass.getText();
+            if(nombre.equals("") || perfil==null || ! password.equals(repassword)){
+                lblMensaje.setText("Datos incorrectos");
+            }else{
+                String msg = vc.crearUsuario(nombre,password,perfil);
+                lblMensaje.setText(msg);
+                txtNombre.setText("");
+                pass.setText("");
+                repass.setText("");
+            }
         }
+        txtNombre.setText("");
+        pass.setText("");
+        repass.setText("");
+        actualizarDatosTabla();
     }
 
     private void actualizarDatosTabla() {

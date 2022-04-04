@@ -137,4 +137,39 @@ public class VideoClubController {
             e.printStackTrace();
         }
     }
+
+    public String editarUsuario(int idusuarios, String perfil) {
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlPerfil="select idroles from roles where rol=?";
+        int idPerfil;
+        String mensaje="";
+        try {
+            PreparedStatement stm=conn.prepareStatement(sqlPerfil);
+            stm.setString(1,perfil);
+            ResultSet rs=stm.executeQuery();
+            if(rs.next()){
+                idPerfil=rs.getInt("idroles");
+                String sqlUpdate="update  usuarios set idrol=? where idusuarios=?";
+                PreparedStatement statement=conn.prepareStatement(sqlUpdate);
+                statement.setInt(1,idPerfil);
+                statement.setInt(2,idusuarios);
+                int resultInsert=statement.executeUpdate();
+                if(resultInsert==1){
+                    mensaje="Usuario actualizado correctamente";
+                }else{
+                    mensaje="Error al actualizar el usuario";
+                }
+                statement.close();
+                stm.close();
+                conn.close();
+            }
+        } catch (SQLException e) {
+            //e.printStackTrace();
+            mensaje="Error de conexión a la BBDD "+e.getErrorCode();
+        }
+
+
+        return mensaje;
+    }
 }
