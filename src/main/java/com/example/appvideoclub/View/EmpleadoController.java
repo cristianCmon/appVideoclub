@@ -2,10 +2,12 @@ package com.example.appvideoclub.View;
 
 import com.example.appvideoclub.Controller.VideoClubController;
 import com.example.appvideoclub.Modelo.*;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -15,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -40,10 +43,17 @@ public class EmpleadoController extends PadreController{
     @FXML
     Pane Peliculas;
     @FXML
+    Label milabel;
+    @FXML
     TextField txtNombre,txtDNI,txtTelefono,txtDireccion;
     @FXML
     Button btnAccion;
     private Cliente clienteSelecionado;
+    private Tabla tabl;
+    //private Paneformulario panef;
+    private AnchorPaneTableView anchorview;
+
+
     @FXML
     protected void addCliente(){
         if(paneNuevoCliente.isVisible()){
@@ -105,14 +115,14 @@ public class EmpleadoController extends PadreController{
         }
     }
     @FXML
-    protected void cargarPeliculas(){
-        Label milabel=new Label();
-        Tabla tabl=vc.cargarpeliculas();
-        AnchorPaneTableView anchorview=null;
-        Paneformulario panef=null;
+    protected void cargarPeliculas() {
+
+        tabl = vc.cargarpeliculas();
+        anchorview = null;
+        Paneformulario panef = null;
         try {
-            anchorview=new AnchorPaneTableView(tabl, milabel);
-            panef=new Paneformulario(tabl,0);
+            anchorview = new AnchorPaneTableView(tabl, milabel);
+            panef = anchorview.getPaneform();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,9 +130,11 @@ public class EmpleadoController extends PadreController{
         panettableviewpeliculas.getChildren().addAll(anchorview.getTableView());
 
         paneformulariopeliculas.getChildren().addAll(panef.getAnchor());
-        ArrayList<Button> botn =panef.getBotones();
 
+        ArrayList<Button> botn = panef.getBotones();
+        botn.get(0).onMouseClickedProperty();
     }
+
 
     public void cargarDatos() {
         menuUsr.setText(vc.nombreUsuario());

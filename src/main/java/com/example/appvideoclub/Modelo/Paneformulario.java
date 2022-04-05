@@ -88,4 +88,8 @@ public class Paneformulario {
     public void setRow(int row) {
         this.row = row;
     }
+    public void refresh(){
+
+
+    }
 }

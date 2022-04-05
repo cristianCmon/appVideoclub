@@ -61,6 +61,7 @@
                      <children>
                         <Pane fx:id="panettableviewpeliculas" layoutX="22.0" layoutY="23.0" prefHeight="487.0" prefWidth="421.0" />
                         <Pane fx:id="paneformulariopeliculas" layoutX="443.0" layoutY="23.0" prefHeight="471.0" prefWidth="467.0" />
+                        <Label fx:id="milabel" layoutX="451.0" layoutY="6.0" text="Label" />
                      </children></AnchorPane>
             </content>
           </Tab>

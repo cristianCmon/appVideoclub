@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AnchorPaneTableView {
+    private Paneformulario paneform;
     private final Tabla tabla;
     private final TableView<ObservableList> tableView = new TableView<ObservableList>();
     private final List<String> columnNames = new ArrayList<>();
@@ -31,11 +32,15 @@ public class AnchorPaneTableView {
         super();
         this.tabla = tabla;
         returnlabel = retlab;
+        paneform=new Paneformulario(this.tabla, 0);
         buildData();
 
     }
 
 
+    public Paneformulario getPaneform() {
+        return paneform;
+    }
 
     public TableView<ObservableList> getTableView() {
         return tableView;
@@ -83,12 +88,22 @@ public class AnchorPaneTableView {
                         ObservableList selectedCells = selectionModel.getSelectedCells();
                         TablePosition tablePosition = (TablePosition) selectedCells.get(0);
                         Object val = tablePosition.getTableColumn().getCellData(newValue);
-                        returnlabel.setText(tablePosition.getRow() + getColumnNames().get(0) + val + tablePosition.getColumn() + getColumnNames().get(tablePosition.getColumn()));//( tablePosition.getRow() + getColumnNames().get(0));
+
+                        returnlabel.setText(String.valueOf(tablePosition.getRow()));
+                        refreshpaneform(tablePosition.getRow());
+                    }
+                }
+
+                private void refreshpaneform(int row) {
+                    for (int i = 0; i < paneform.textos.size(); i++) {
+                        paneform.textos.get(i).setText(String.valueOf(tabla.getRegistro(row).get(i).getValor()));
+
                     }
                 }
             });
         }
     }
+
     public List<String> getColumnNames() {
         return columnNames;
     }
