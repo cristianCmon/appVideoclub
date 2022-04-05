@@ -17,7 +17,7 @@ public class VideoClubController {
     }
 
     public Boolean login(String nombre, String pass){
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sql="SELECT T0.idusuarios as id, T0.nombre, T1.rol FROM videoclub.usuarios T0 inner join roles T1 on T0.idrol=T1.idroles where nombre=? and password=?";
         try {
@@ -72,7 +72,7 @@ public class VideoClubController {
     }
 
     public String crearUsuario(String nombre, String password, String perfil) {
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlPerfil="select idroles from roles where rol=?";
         int idPerfil;
@@ -108,7 +108,7 @@ public class VideoClubController {
     }
 
     public ResultSet getAllUsuarios(){
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sql="select idusuarios,nombre,rol from usuarios T0 inner join roles T1 on T0.idrol=T1.idroles;";
         try {
@@ -124,7 +124,7 @@ public class VideoClubController {
     }
 
     public void borrarUsuario(int idusuarios) {
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sql="delete from usuarios where idusuarios=?;";
 
@@ -141,7 +141,7 @@ public class VideoClubController {
     }
 
     public String editarUsuario(int idusuarios, String perfil) {
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlPerfil="select idroles from roles where rol=?";
         int idPerfil;
@@ -177,7 +177,7 @@ public class VideoClubController {
 
     public List<Cliente> getAllClientes() {
         List<Cliente> list=new ArrayList<>();
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlSelect="select * from clientes";
         try {
@@ -195,7 +195,7 @@ public class VideoClubController {
     }
 
     public boolean borrarCliente(int idcliente) {
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlDelete="delete from clientes where idcliente=?";
         int result = 0;
@@ -216,7 +216,7 @@ public class VideoClubController {
     }
 
     public boolean crearCliente(String nombre, String dni, String telefono, String direccion) {
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlInsert="insert into clientes (nombre,DNI,telefono,direccion) value (?,?,?,?)";
         int result = 0;
@@ -243,7 +243,7 @@ public class VideoClubController {
     }
 
     public boolean editarCliente(int idcliente, String nombre, String dni, String telefono, String direccion) {
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlEditar="UPDATE clientes SET nombre = ?, telefono = ?, dni = ?, direccion = ? WHERE (idcliente = ?);";
         int result=0;
@@ -267,7 +267,7 @@ public class VideoClubController {
     }
     public Tabla cargarpeliculas(){
         Tabla mitabl=null;
-        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Conexion cn=new Conexion("localhost","videoclub","root","queteden");
         Connection conn=cn.conectar();
         String sqlSelect="select * from peliculas";
         try {

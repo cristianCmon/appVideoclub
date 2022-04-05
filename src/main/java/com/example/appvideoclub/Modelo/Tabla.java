@@ -1,5 +1,8 @@
 package com.example.appvideoclub.Modelo;
 
+import com.example.appvideoclub.Modelo.CampoTabla;
+import com.example.appvideoclub.Modelo.TipodatosResultset;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +19,7 @@ public class Tabla {
 
 
         this.tipo = null;
-         CampoTabla campo = null;
+        CampoTabla campo = null;
 
         try {
             tipo = new TipodatosResultset(rs);
@@ -25,8 +28,7 @@ public class Tabla {
         }
 
         try {
-            rs.beforeFirst();
-            while (rs.next()) {
+                       while (rs.next()) {
 
                 ArrayList<CampoTabla> regTemp=new ArrayList<>();
                 for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
@@ -69,17 +71,23 @@ public class Tabla {
                 tabla.add(regTemp);
                 //regTemp=null;
             }
-            } catch(SQLException e){
-                e.printStackTrace();
-            }
+        } catch(SQLException e){
+            e.printStackTrace();
+        }
         this.size= tabla.size();
     }
 
 
     public ArrayList<CampoTabla> getRegistro(int row){
-        ArrayList<CampoTabla>registro=new ArrayList<>();
-        registro=tabla.get(row);
-        return registro;
+        ArrayList<CampoTabla> registro = new ArrayList<>();
+        if (tabla.size()>0) {
+
+            registro = tabla.get(row);
+            return registro;
+        }else{
+            return null;
+        }
+
     }
 
 

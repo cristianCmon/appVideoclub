@@ -25,7 +25,7 @@ public class TipodatosResultset {
     }
 
 
-    static String gettipodato(String str) {
+    public String gettipodato(String str) {
         switch (str) {
             case "VARCHAR", "LONGTEXT","TEXT","TINYTEXT","CHAR":
                 return "String";
