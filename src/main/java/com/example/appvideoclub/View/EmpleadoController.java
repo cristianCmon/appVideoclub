@@ -32,12 +32,16 @@ public class EmpleadoController extends PadreController{
     @FXML
     TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP;
     @FXML
-    Pane paneNuevoCliente;
+    Pane paneNuevoCliente,paneDevolver,paneAlquiler;
     @FXML
     TextField txtNombre,txtDNI,txtTelefono,txtDireccion;
     @FXML
     Button btnAccion;
     private Cliente clienteSelecionado;
+    @FXML
+    ComboBox cbCliente,cbPelicula;
+
+
     @FXML
     protected void addCliente(){
         if(paneNuevoCliente.isVisible()){
@@ -101,6 +105,39 @@ public class EmpleadoController extends PadreController{
     @FXML
     protected void cargarPeliculas(){
         System.out.println("Panel de peliculas");
+    }
+    @FXML
+    protected void cargarDatosAlquileres(){
+        //Cargamos datos de los clientes
+        ObservableList<String> clienteObservableList=FXCollections.observableArrayList();
+        clienteObservableList.add("Juan");
+        clienteObservableList.add("Pedro");
+        cbCliente.setItems(clienteObservableList);
+        //Cargamos datos de las películas
+        ObservableList<String> peliculasObservableList=FXCollections.observableArrayList();
+        peliculasObservableList.add("El último Emperador");
+        peliculasObservableList.add("Rambo I");
+        cbPelicula.setItems(peliculasObservableList);
+        //Cargamos datos de los alquileres
+
+    }
+    @FXML
+    protected void devolverPelicula(){
+        if(paneDevolver.isVisible()){
+            paneDevolver.setVisible(false);
+        }else{
+            paneDevolver.setVisible(true);
+        }
+        paneAlquiler.setVisible(false);
+    }
+    @FXML
+    protected void nuevoAlquiler(){
+        if(paneAlquiler.isVisible()){
+            paneAlquiler.setVisible(false);
+        }else{
+            paneAlquiler.setVisible(true);
+        }
+        paneDevolver.setVisible(false);
     }
 
     public void cargarDatos() {
