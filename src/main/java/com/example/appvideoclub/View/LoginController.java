@@ -52,8 +52,12 @@ public class LoginController {
             root = loader.load();
             PadreController controller=loader.getController();
             controller.setVc(vc);
-            if(perfil.equals("ADMIN"))
+            if(perfil.equals("ADMIN")){
                 ((AdminController) controller).cargarPerfiles();
+            }else{
+                ((EmpleadoController) controller).cargarDatos();
+            }
+
             Scene scene=new Scene(root);
             scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
             Stage stage=new Stage();

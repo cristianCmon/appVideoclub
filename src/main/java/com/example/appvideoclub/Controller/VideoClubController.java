@@ -1,5 +1,6 @@
 package com.example.appvideoclub.Controller;
 
+import com.example.appvideoclub.Modelo.Cliente;
 import com.example.appvideoclub.Modelo.Conexion;
 import com.example.appvideoclub.Modelo.Usuario;
 
@@ -171,5 +172,17 @@ public class VideoClubController {
 
 
         return mensaje;
+    }
+
+    public List<Cliente> getAllClientes() {
+        List<Cliente> list=new ArrayList<>();
+        list.add(new Cliente(1,"adf","asdf","adfadf","adfadsf"));
+        list.add(new Cliente(2,"adf","asdf","adfadf","adfadsf"));
+        list.add(new Cliente(3,"adf","asdf","adfadf","adfadsf"));
+        return list;
+    }
+
+    public void borrarCliente(int idcliente) {
+
     }
 }
