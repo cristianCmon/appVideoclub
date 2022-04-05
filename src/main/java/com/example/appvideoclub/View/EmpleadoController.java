@@ -7,27 +7,37 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
+import java.io.IOException;
 import java.util.List;
 
 public class EmpleadoController extends PadreController{
-
+    @FXML
+    protected MenuButton menuUsr;
     @FXML
     TableView tblClientes;
     @FXML
     TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP;
     @FXML
     Pane paneNuevoCliente;
+    @FXML
+    TextField txtNombre,txtDNI,txtTelefono,txtDireccion;
+    @FXML
+    Button btnAccion;
+    private Cliente clienteSelecionado;
     @FXML
     protected void addCliente(){
         if(paneNuevoCliente.isVisible()){
@@ -39,10 +49,62 @@ public class EmpleadoController extends PadreController{
     }
     @FXML
     protected void btnCrearCliente(){
+        if(clienteSelecionado==null) {
+            boolean clienteCreado = vc.crearCliente(txtNombre.getText(), txtDNI.getText(), txtTelefono.getText(), txtDireccion.getText());
+            if (clienteCreado) {
+                txtNombre.setText("");
+                txtDNI.setText("");
+                txtTelefono.setText("");
+                txtDireccion.setText("");
+                cargarDatos();
+            } else {
 
+            }
+        }else{
+            if(vc.editarCliente(clienteSelecionado.getIdcliente(),txtNombre.getText(),txtDNI.getText(),txtTelefono.getText(),txtDireccion.getText())){
+                clienteSelecionado=null;
+                paneNuevoCliente.setVisible(false);
+                txtNombre.setText("");
+                txtDNI.setText("");
+                txtDireccion.setText("");
+                txtTelefono.setText("");
+                btnAccion.setText("Crear Cliente");
+                cargarDatos();
+            }else{
+
+            }
+
+        }
+    }
+    @FXML
+    protected void btnSalir(ActionEvent evt){
+        Stage stageP = (Stage) this.menuUsr.getScene().getWindow();
+        stageP.close();
+        FXMLLoader loader;
+        loader = new FXMLLoader(getClass().getResource("/views/login-view.fxml"));
+
+        Parent root = null;
+        try {
+            root = loader.load();
+            Scene scene=new Scene(root,320,240);
+            scene.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+            Stage stage=new Stage();
+            stage.setTitle("App VideoClub");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    protected void cargarPeliculas(){
+        System.out.println("Panel de peliculas");
     }
 
     public void cargarDatos() {
+        menuUsr.setText(vc.nombreUsuario());
         List<Cliente> clientes=vc.getAllClientes();
         cId.setCellValueFactory(new PropertyValueFactory<>("idcliente"));
         cNombre.setCellValueFactory(new PropertyValueFactory<>("nombre"));
@@ -80,10 +142,20 @@ public class EmpleadoController extends PadreController{
                             //Añadimos funcionalidad a los botones
                             btnDelete.setOnAction((ActionEvent event) -> {
                               Cliente cliente= (Cliente) tblClientes.getItems().get(getIndex());
-                              vc.borrarCliente(cliente.getIdcliente());
+                              if(vc.borrarCliente(cliente.getIdcliente())){
+                                  cargarDatos();
+                              }
 
                             });
                             btnEdit.setOnAction((ActionEvent event) -> {
+                                Cliente cliente= (Cliente) tblClientes.getItems().get(getIndex());
+                                clienteSelecionado=cliente;
+                                paneNuevoCliente.setVisible(true);
+                                txtNombre.setText(cliente.getNombre());
+                                txtDNI.setText(cliente.getDNI());
+                                txtDireccion.setText(cliente.getDireccion());
+                                txtTelefono.setText(cliente.getTelefono());
+                                btnAccion.setText("Editar Cliente");
 
                             });
                             setGraphic(pane);

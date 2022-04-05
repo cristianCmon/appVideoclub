@@ -176,13 +176,92 @@ public class VideoClubController {
 
     public List<Cliente> getAllClientes() {
         List<Cliente> list=new ArrayList<>();
-        list.add(new Cliente(1,"adf","asdf","adfadf","adfadsf"));
-        list.add(new Cliente(2,"adf","asdf","adfadf","adfadsf"));
-        list.add(new Cliente(3,"adf","asdf","adfadf","adfadsf"));
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlSelect="select * from clientes";
+        try {
+            Statement stm=conn.createStatement();
+            ResultSet rs=stm.executeQuery(sqlSelect);
+            while(rs.next()){
+                list.add(new Cliente(rs.getInt("idcliente"),rs.getString("nombre"),rs.getString("DNI"),rs.getString("telefono"),rs.getString("direccion")));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         return list;
     }
 
-    public void borrarCliente(int idcliente) {
+    public boolean borrarCliente(int idcliente) {
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlDelete="delete from clientes where idcliente=?";
+        int result = 0;
+        try {
+            PreparedStatement stm=conn.prepareStatement(sqlDelete);
+            stm.setInt(1,idcliente);
+            result=stm.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(result>0){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public boolean crearCliente(String nombre, String dni, String telefono, String direccion) {
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlInsert="insert into clientes (nombre,DNI,telefono,direccion) value (?,?,?,?)";
+        int result = 0;
+        try {
+            PreparedStatement stm=conn.prepareStatement(sqlInsert);
+            stm.setString(1,nombre);
+            stm.setString(2,dni);
+            stm.setString(3,telefono);
+            stm.setString(4,direccion);
+            result=stm.executeUpdate();
+
+            stm.close();
+            conn.close();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(result>0){
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public boolean editarCliente(int idcliente, String nombre, String dni, String telefono, String direccion) {
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlEditar="UPDATE clientes SET nombre = ?, telefono = ?, dni = ?, direccion = ? WHERE (idcliente = ?);";
+        int result=0;
+        try {
+            PreparedStatement stm=conn.prepareStatement(sqlEditar);
+            stm.setString(1,nombre);
+            stm.setString(2,telefono);
+            stm.setString(3,dni);
+            stm.setString(4,direccion);
+            stm.setInt(5,idcliente);
+            result=stm.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        if(result>0){
+            return true;
+        }else{
+            return false;
+        }
 
     }
 }
