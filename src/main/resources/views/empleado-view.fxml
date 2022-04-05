@@ -14,8 +14,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.EmpleadoController">
+<AnchorPane prefHeight="600.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.EmpleadoController">
    <children>
       <TabPane layoutX="14.0" layoutY="44.0" prefHeight="550.0" prefWidth="938.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -58,7 +57,11 @@
           </Tab>
           <Tab onSelectionChanged="#cargarPeliculas" text="Peliculas">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Pane fx:id="panettableviewpeliculas" layoutX="22.0" layoutY="23.0" prefHeight="487.0" prefWidth="421.0" />
+                        <Pane fx:id="paneformulariopeliculas" layoutX="443.0" layoutY="23.0" prefHeight="471.0" prefWidth="467.0" />
+                     </children></AnchorPane>
             </content>
           </Tab>
             <Tab text="Alquileres">

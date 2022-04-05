@@ -2,6 +2,7 @@ package com.example.appvideoclub.Controller;
 
 import com.example.appvideoclub.Modelo.Cliente;
 import com.example.appvideoclub.Modelo.Conexion;
+import com.example.appvideoclub.Modelo.Tabla;
 import com.example.appvideoclub.Modelo.Usuario;
 
 import java.sql.*;
@@ -262,6 +263,23 @@ public class VideoClubController {
         }else{
             return false;
         }
+
+    }
+    public Tabla cargarpeliculas(){
+        Tabla mitabl=null;
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlSelect="select * from peliculas";
+        try {
+            Statement stm=conn.createStatement();
+            ResultSet rs=stm.executeQuery(sqlSelect);
+            mitabl=new Tabla(rs);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return mitabl;
 
     }
 }

@@ -1,8 +1,7 @@
 package com.example.appvideoclub.View;
 
 import com.example.appvideoclub.Controller.VideoClubController;
-import com.example.appvideoclub.Modelo.Cliente;
-import com.example.appvideoclub.Modelo.UsuarioDTO;
+import com.example.appvideoclub.Modelo.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +21,7 @@ import javafx.util.Callback;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class EmpleadoController extends PadreController{
@@ -32,7 +32,9 @@ public class EmpleadoController extends PadreController{
     @FXML
     TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP;
     @FXML
-    Pane paneNuevoCliente;
+    Pane paneNuevoCliente,paneformulariopeliculas,panettableviewpeliculas;
+    @FXML
+    Pane Peliculas;
     @FXML
     TextField txtNombre,txtDNI,txtTelefono,txtDireccion;
     @FXML
@@ -100,7 +102,21 @@ public class EmpleadoController extends PadreController{
     }
     @FXML
     protected void cargarPeliculas(){
-        System.out.println("Panel de peliculas");
+        //
+        Label milabel=null;
+        Stage stage=null;
+        Tabla tabl=vc.cargarpeliculas();
+        AnchorPaneTableView anchorview=null;
+        Paneformulario panef=null;
+        try {
+            panef=new Paneformulario(tabl,stage,2);
+            anchorview=new AnchorPaneTableView(tabl,milabel);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        panettableviewpeliculas.getChildren().addAll(anchorview.getAnchorp());
+        paneformulariopeliculas.getChildren().addAll(panef.getAnchor());
+
     }
 
     public void cargarDatos() {

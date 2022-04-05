@@ -2,7 +2,6 @@ package com.example.appvideoclub.Modelo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class TipodatosResultset {
