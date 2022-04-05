@@ -2,7 +2,11 @@ package com.example.appvideoclub.Controller;
 
 import com.example.appvideoclub.Modelo.Cliente;
 import com.example.appvideoclub.Modelo.Conexion;
+import com.example.appvideoclub.Modelo.Pelicula;
 import com.example.appvideoclub.Modelo.Usuario;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -263,5 +267,51 @@ public class VideoClubController {
             return false;
         }
 
+    }
+
+    public boolean borrarPelicula(int idpelicula) {
+        return true;
+    }
+
+    public List<Pelicula> getAllPeliculas() {
+        List<Pelicula> list = new ArrayList<>();
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlSelect = "SELECT * FROM peliculas T0 inner join generos T1 on T1.idgenero = T0.idgenero";
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sqlSelect);
+            while(rs.next()){
+                list.add(new Pelicula(rs.getInt("idpelicula"), rs.getString("titulo"), rs.getString("argumento"), rs.getInt("duracion"),rs.getString("genero")));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<String> getAllGeneros(){
+        List<String> generos=new ArrayList<>();
+        Conexion cn=new Conexion("localhost","videoclub","root","");
+        Connection conn=cn.conectar();
+        String sqlSelect = "SELECT genero FROM generos";
+        try {
+            Statement stm = conn.createStatement();
+            ResultSet rs = stm.executeQuery(sqlSelect);
+            while(rs.next()){
+                generos.add(rs.getString("genero"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return generos;
+    }
+
+    public boolean crearPelicula(TextField txtTitulo, TextArea txtArgumento, TextField txtDuracion, ChoiceBox choiceGenero) {
+        return true;
+    }
+
+    public boolean editarPelicula(int idpelicula, String text, String text1, String text2, Object o) {
+        return true;
     }
 }

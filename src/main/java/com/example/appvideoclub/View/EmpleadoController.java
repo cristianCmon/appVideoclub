@@ -2,6 +2,7 @@ package com.example.appvideoclub.View;
 
 import com.example.appvideoclub.Controller.VideoClubController;
 import com.example.appvideoclub.Modelo.Cliente;
+import com.example.appvideoclub.Modelo.Pelicula;
 import com.example.appvideoclub.Modelo.UsuarioDTO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,16 +29,21 @@ public class EmpleadoController extends PadreController{
     @FXML
     protected MenuButton menuUsr;
     @FXML
-    TableView tblClientes;
+    TableView tblClientes, tblPeliculas;
     @FXML
-    TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP;
+    TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP, cTitulo, cArg, cDuracion, cGenero;
     @FXML
-    Pane paneNuevoCliente;
+    Pane paneNuevoCliente, paneNuevaPelicula;
     @FXML
-    TextField txtNombre,txtDNI,txtTelefono,txtDireccion;
+    TextField txtNombre,txtDNI,txtTelefono,txtDireccion, txtTitulo, txtDuracion;
     @FXML
-    Button btnAccion;
+    TextArea txtArgumento;
+    @FXML
+    ChoiceBox choiceGenero;
+    @FXML
+    Button btnAccion, btnAccionPelicula;
     private Cliente clienteSelecionado;
+    private Pelicula peliculaSeleccionada;
     @FXML
     protected void addCliente(){
         if(paneNuevoCliente.isVisible()){
@@ -98,9 +104,112 @@ public class EmpleadoController extends PadreController{
             e.printStackTrace();
         }
     }
+
+    @FXML
+    protected void addPelicula(){
+        if(paneNuevaPelicula.isVisible()){
+            paneNuevaPelicula.setVisible(false);
+        } else {
+            paneNuevaPelicula.setVisible(true);
+        }
+    }
+
+    @FXML
+    protected void btnCrearPelicula(){
+        if(peliculaSeleccionada==null){
+            boolean peliculaCreada = vc.crearPelicula(txtTitulo, txtArgumento,txtDuracion,choiceGenero);
+            if(peliculaCreada){
+            txtTitulo.setText("");
+            txtArgumento.setText("");
+            txtDuracion.setText("");
+            choiceGenero.getItems().get(0);
+            cargarPeliculas();
+            }
+        } else {
+            if(vc.editarPelicula(peliculaSeleccionada.getIdpelicula(),txtTitulo.getText(),txtArgumento.getText(),txtDuracion.getText(),choiceGenero.getItems().get(0))){
+                peliculaSeleccionada=null;
+                paneNuevaPelicula.setVisible(false);
+                txtTitulo.setText("");
+                txtArgumento.setText("");
+                txtDuracion.setText("");
+                //choiceGenero.setItems();
+            }
+        }
+    }
+
     @FXML
     protected void cargarPeliculas(){
-        System.out.println("Panel de peliculas");
+        List<Pelicula> peliculas = vc.getAllPeliculas();
+        cTitulo.setCellFactory(new PropertyValueFactory<>("titulo"));
+        cArg.setCellFactory(new PropertyValueFactory<>("argumento"));
+        cDuracion.setCellFactory(new PropertyValueFactory<>("duracion"));
+        cGenero.setCellFactory(new PropertyValueFactory<>("genero"));
+        ObservableList<String> data = FXCollections.observableArrayList();
+        List<String> listaGeneros = vc.getAllGeneros();
+        for (int i = 0; i < listaGeneros.size(); i++) {
+            data.add(listaGeneros.get(i));
+        }
+        choiceGenero.setItems(data);
+
+        cOP.setCellFactory(new Callback<TableColumn<Cliente, Void>, TableCell<Cliente, Void>>() {
+            @Override
+            public TableCell<Cliente, Void> call(final TableColumn<Cliente, Void> param) {
+                final TableCell<Cliente, Void> cell = new TableCell<Cliente, Void>() {
+                    private final Button btnDelete = new Button();
+                    private final Button btnEdit = new Button();
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            //Creating a graphic (image)
+                            Image img = new Image(String.valueOf(getClass().getResource("/images/trash.png")));
+                            ImageView view = new ImageView(img);
+                            view.setFitHeight(20);
+                            view.setPreserveRatio(true);
+                            //Setting a graphic to the button
+                            btnDelete.setGraphic(view);
+                            Image imgEdit = new Image(String.valueOf(getClass().getResource("/images/edit.png")));
+                            ImageView viewEdit = new ImageView(imgEdit);
+                            viewEdit.setFitHeight(20);
+                            viewEdit.setPreserveRatio(true);
+                            //Setting a graphic to the button
+                            btnEdit.setGraphic(viewEdit);
+                            HBox pane = new HBox(btnDelete, btnEdit);
+                            //Añadimos funcionalidad a los botones
+                            btnDelete.setOnAction((ActionEvent event) -> {
+                                Pelicula pelicula = (Pelicula) tblPeliculas.getItems().get(getIndex());
+                                if (vc.borrarPelicula(pelicula.getIdpelicula())) {
+                                    cargarPeliculas();
+                                }
+
+                            });
+                            btnEdit.setOnAction((ActionEvent event) -> {
+                                Pelicula pelicula = (Pelicula) tblPeliculas.getItems().get(getIndex());
+                                peliculaSeleccionada = pelicula;
+                                paneNuevaPelicula.setVisible(true);
+                                txtTitulo.setText(pelicula.getTitulo());
+                                txtArgumento.setText(pelicula.getArgumento());
+                                txtDuracion.setText(String.valueOf(pelicula.getDuracion()));
+                                btnAccionPelicula.setText("Editar Pelicula");
+
+                            });
+                            setGraphic(pane);
+                        }
+                    }
+                };
+                return cell;
+            }
+        });
+        ObservableList<Pelicula> peliculas1= FXCollections.observableArrayList();
+
+        for (int i = 0; i < peliculas.size(); i++) {
+            peliculas1.add(peliculas.get(i));
+        }
+        tblPeliculas.setItems(peliculas1);
+
     }
 
     public void cargarDatos() {
@@ -173,4 +282,6 @@ public class EmpleadoController extends PadreController{
         }
         tblClientes.setItems(clientes1);
     }
+
+
 }
