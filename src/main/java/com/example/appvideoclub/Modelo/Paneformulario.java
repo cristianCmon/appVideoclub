@@ -17,7 +17,11 @@ public class Paneformulario {
     Tabla tabla;
     int row;
 
-    public Paneformulario(Tabla tabla,  int row) throws SQLException {
+    public ArrayList<TextField> getTextos() {
+        return textos;
+    }
+
+    public Paneformulario(Tabla tabla, int row) throws SQLException {
         super();
 
         this.row=row;

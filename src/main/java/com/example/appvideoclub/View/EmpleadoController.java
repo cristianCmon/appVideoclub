@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -139,6 +140,25 @@ public class EmpleadoController extends PadreController{
 
         ArrayList<Button> botn = panef.getBotones();
         botn.get(0).onMouseClickedProperty();
+        botn.get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String titulo=anchorview.getPaneform().getTextos().get(1).getText();
+                Integer duracion= Integer.valueOf(anchorview.getPaneform().getTextos().get(2).getText());
+                String genero=anchorview.getPaneform().getTextos().get(3).getText();
+                vc.crearPelicula(titulo,duracion,genero);
+                anchorview.getTableView().refresh();
+                cargarPeliculas();
+            }
+        });
+        botn.get(3).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < anchorview.getPaneform().getTextos().size(); i++) {
+                    anchorview.getPaneform().getTextos().get(i).setText("");
+                }
+            }
+        });
     }
     @FXML
     protected void cargarDatosAlquileres(){
