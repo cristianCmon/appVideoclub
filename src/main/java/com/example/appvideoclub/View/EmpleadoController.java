@@ -40,8 +40,8 @@ public class EmpleadoController extends PadreController{
     TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP;
 
     @FXML
-    Pane paneNuevoCliente,paneDevolver,paneAlquiler;
-    Pane paneNuevoCliente,paneformulariopeliculas,panettableviewpeliculas;
+    Pane paneformulariopeliculas,panettableviewpeliculas,paneNuevoCliente,paneDevolver,paneAlquiler;
+
     @FXML
     Pane Peliculas;
     @FXML

@@ -13,7 +13,7 @@ public class Conexion {
     public Conexion(String url, String bbdd, String usr, String pass) {
         this.url = "jdbc:mysql://"+url+":3306/"+bbdd+"";
         this.usr = "root";
-        this.pass = "queteden";
+        this.pass = "";
     }
 
     public Connection conectar(){
