@@ -38,7 +38,9 @@ public class EmpleadoController extends PadreController{
     TableView tblClientes;
     @FXML
     TableColumn cId,cNombre,cDNI,cTelefono,cDireccion,cOP;
+
     @FXML
+    Pane paneNuevoCliente,paneDevolver,paneAlquiler;
     Pane paneNuevoCliente,paneformulariopeliculas,panettableviewpeliculas;
     @FXML
     Pane Peliculas;
@@ -49,6 +51,10 @@ public class EmpleadoController extends PadreController{
     @FXML
     Button btnAccion;
     private Cliente clienteSelecionado;
+    @FXML
+    ComboBox cbCliente,cbPelicula;
+
+
     private Tabla tabl;
     //private Paneformulario panef;
     private AnchorPaneTableView anchorview;
@@ -134,6 +140,40 @@ public class EmpleadoController extends PadreController{
         ArrayList<Button> botn = panef.getBotones();
         botn.get(0).onMouseClickedProperty();
     }
+    @FXML
+    protected void cargarDatosAlquileres(){
+        //Cargamos datos de los clientes
+        ObservableList<String> clienteObservableList=FXCollections.observableArrayList();
+        clienteObservableList.add("Juan");
+        clienteObservableList.add("Pedro");
+        cbCliente.setItems(clienteObservableList);
+        //Cargamos datos de las películas
+        ObservableList<String> peliculasObservableList=FXCollections.observableArrayList();
+        peliculasObservableList.add("El último Emperador");
+        peliculasObservableList.add("Rambo I");
+        cbPelicula.setItems(peliculasObservableList);
+        //Cargamos datos de los alquileres
+
+    }
+    @FXML
+    protected void devolverPelicula(){
+        if(paneDevolver.isVisible()){
+            paneDevolver.setVisible(false);
+        }else{
+            paneDevolver.setVisible(true);
+        }
+        paneAlquiler.setVisible(false);
+    }
+    @FXML
+    protected void nuevoAlquiler(){
+        if(paneAlquiler.isVisible()){
+            paneAlquiler.setVisible(false);
+        }else{
+            paneAlquiler.setVisible(true);
+        }
+        paneDevolver.setVisible(false);
+    }
+
 
 
     public void cargarDatos() {

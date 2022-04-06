@@ -14,7 +14,8 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.EmpleadoController">
+
+<AnchorPane prefHeight="600.0" prefWidth="955.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.appvideoclub.View.EmpleadoController">
    <children>
       <TabPane layoutX="14.0" layoutY="44.0" prefHeight="550.0" prefWidth="938.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
@@ -65,9 +66,54 @@
                      </children></AnchorPane>
             </content>
           </Tab>
-            <Tab text="Alquileres">
+            <Tab onSelectionChanged="#cargarDatosAlquileres" text="Alquileres">
               <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label layoutX="46.0" layoutY="18.0" prefHeight="18.0" prefWidth="106.0" text="Nuevo Alquiler" />
+                        <TableView fx:id="tblAlquilers" layoutX="333.0" layoutY="14.0" prefHeight="502.0" prefWidth="590.0">
+                          <columns>
+                            <TableColumn fx:id="cId" prefWidth="75.0" text="id" />
+                            <TableColumn fx:id="cCliente" prefWidth="75.0" text="Cliente" />
+                              <TableColumn fx:id="cPelicula" prefWidth="140.0" text="Pelicula" />
+                              <TableColumn fx:id="cFechaInicio" prefWidth="171.199951171875" text="Fecha Alquiler" />
+                              <TableColumn fx:id="cFechaFin" prefWidth="128.0" text="Fecha Devolución" />
+                          </columns>
+                        </TableView>
+                        <ImageView fx:id="btnNuevoAlquiler" fitHeight="26.0" fitWidth="34.0" layoutX="8.0" layoutY="14.0" onMouseClicked="#nuevoAlquiler" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/plus.png" />
+                           </image>
+                        </ImageView>
+                        <Pane fx:id="paneAlquiler" layoutX="14.0" layoutY="40.0" prefHeight="200.0" prefWidth="303.0" visible="false">
+                           <children>
+                              <ComboBox fx:id="cbCliente" layoutX="127.0" layoutY="19.0" prefWidth="150.0" />
+                              <Label layoutX="14.0" layoutY="14.0" text="Selecciona Cliente:" />
+                              <ComboBox fx:id="cbPelicula" layoutX="127.0" layoutY="58.0" prefWidth="150.0" />
+                              <Label layoutX="14.0" layoutY="53.0" text="Selecciona Película:" />
+                              <DatePicker layoutX="115.0" layoutY="96.0" />
+                              <Label layoutX="14.0" layoutY="92.0" text="Fecha Inicio" />
+                              <Button layoutX="16.0" layoutY="139.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="274.0" text="Nuevo Alquiler" />
+                           </children>
+                        </Pane>
+                        <ImageView fx:id="btnDevolverPelicula" fitHeight="26.0" fitWidth="34.0" layoutX="153.0" layoutY="14.0" onMouseClicked="#devolverPelicula" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/devolver.png" />
+                           </image>
+                        </ImageView>
+                        <Label layoutX="186.0" layoutY="18.0" prefHeight="18.0" prefWidth="106.0" text="Devolver" />
+                        <Pane fx:id="paneDevolver" layoutX="13.0" layoutY="50.0" prefHeight="200.0" prefWidth="303.0" visible="false">
+                           <children>
+                              <ComboBox layoutX="127.0" layoutY="19.0" prefWidth="150.0" />
+                              <Label layoutX="14.0" layoutY="14.0" text="Selecciona Cliente:" />
+                              <ComboBox layoutX="127.0" layoutY="58.0" prefWidth="150.0" />
+                              <Label layoutX="14.0" layoutY="53.0" text="Selecciona Película:" />
+                              <DatePicker layoutX="115.0" layoutY="96.0" />
+                              <Label layoutX="14.0" layoutY="92.0" text="Fecha Devolución" />
+                              <Button layoutX="16.0" layoutY="139.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="274.0" text="Devolver" />
+                           </children>
+                        </Pane>
+                     </children></AnchorPane>
               </content>
             </Tab>
         </tabs>
