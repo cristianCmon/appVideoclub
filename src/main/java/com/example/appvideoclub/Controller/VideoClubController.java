@@ -269,7 +269,7 @@ public class VideoClubController {
         Tabla mitabl=null;
         Conexion cn=new Conexion("localhost","videoclub","root","");
         Connection conn=cn.conectar();
-        String sqlSelect="select * from peliculas";
+        String sqlSelect="SELECT idpelicula, titulo, argumento, duracion, T1.genero FROM videoclub.peliculas T0 inner join generos T1 on T0.idgenero=T1.idgenero";
         try {
             Statement stm=conn.createStatement();
             ResultSet rs=stm.executeQuery(sqlSelect);
