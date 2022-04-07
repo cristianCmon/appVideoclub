@@ -142,11 +142,7 @@ public class EmpleadoController extends PadreController{
         botn.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                if(botn.get(2).isDisabled()){
-                    botn.get(2).setDisable(false);
-                } else {
-                    botn.get(2).setDisable(true);
-                }
+                actualizarBtn(botn);
             }
         });
         botn.get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -160,12 +156,13 @@ public class EmpleadoController extends PadreController{
                 cargarPeliculas();
             }
         });
-
         botn.get(3).setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                for (int i = 0; i < anchorview.getPaneform().getTextos().size(); i++) {
-                    anchorview.getPaneform().getTextos().get(i).setText("");
+                if(! anchorview.getPaneform().getTextos().get(0).getText().equals("")) {
+                    Integer idpelicula = Integer.valueOf(anchorview.getPaneform().getTextos().get(0).getText());
+                    vc.borrarPelicula(idpelicula);
+                    cargarPeliculas();
                 }
             }
         });
@@ -179,9 +176,11 @@ public class EmpleadoController extends PadreController{
                 Integer duracion = Integer.valueOf(anchorview.getPaneform().getTextos().get(3).getText());
                 String genero = anchorview.getPaneform().getTextos().get(4).getText();
                 vc.editarPelicula(idpelicula,titulo,argumento,duracion,genero);
+                actualizarBtn(botn);
                 cargarPeliculas();
             }
         });
+        borrarCampos(anchorview.getPaneform().getTextos());
     }
     @FXML
     protected void cargarDatosAlquileres(){
@@ -288,5 +287,21 @@ public class EmpleadoController extends PadreController{
             clientes1.add(clientes.get(i));
         }
         tblClientes.setItems(clientes1);
+    }
+
+    private void actualizarBtn(ArrayList<Button> botn){
+
+        for (int i = 0; i < botn.size(); i++) {
+            if(botn.get(i).isDisabled()==true){
+                botn.get(i).setDisable(false);
+            }else {
+                botn.get(i).setDisable(true);
+            }
+        }
+    }
+    private void borrarCampos(ArrayList<TextField> textFields){
+        for (int i = 0; i < textFields.size(); i++) {
+            textFields.get(i).setText("");
+        }
     }
 }

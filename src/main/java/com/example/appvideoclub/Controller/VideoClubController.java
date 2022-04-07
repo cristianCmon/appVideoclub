@@ -334,4 +334,19 @@ public class VideoClubController {
             e.printStackTrace();
         }
     }
+
+    public void borrarPelicula(Integer idpelicula) {
+        Conexion cn = new Conexion("localhost", "videoclub", "root", "");
+        Connection conn = cn.conectar();
+        String sqlDelete="delete from peliculas where idpelicula=?";
+        try {
+            PreparedStatement stm=conn.prepareStatement(sqlDelete);
+            stm.setInt(1,idpelicula);
+            stm.executeUpdate();
+            stm.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
