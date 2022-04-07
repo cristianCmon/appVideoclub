@@ -282,4 +282,56 @@ public class VideoClubController {
         return mitabl;
 
     }
+
+    public void crearPelicula(String titulo, Integer duracion, String genero) {
+        Conexion cn = new Conexion("localhost", "videoclub", "root", "");
+        Connection conn = cn.conectar();
+        String sqlGenero = "SELECT idgenero FROM generos WHERE genero=?";
+        try {
+            PreparedStatement stm = conn.prepareStatement(sqlGenero);
+            stm.setString(1, genero);
+            ResultSet rs=stm.executeQuery();
+            if(rs.next()){
+                int idgenero=rs.getInt("idgenero");
+                String sqlInsert="INSERT INTO peliculas (titulo, duracion, idgenero) VALUES (?,?,?)";
+                PreparedStatement stmi= conn.prepareStatement(sqlInsert);
+                stmi.setString(1,titulo);
+                stmi.setInt(2,duracion);
+                stmi.setInt(3,idgenero);
+                stmi.executeUpdate();
+                stmi.close();
+            }
+            stm.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void editarPelicula(Integer idpelicula, String titulo, String argumento, Integer duracion, String genero) {
+        Conexion cn = new Conexion("localhost", "videoclub", "root", "");
+        Connection conn = cn.conectar();
+        String sqlGenero = "SELECT idgenero FROM generos WHERE genero=?";
+        try {
+            PreparedStatement stm = conn.prepareStatement(sqlGenero);
+            stm.setString(1,genero);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()){
+                int idgenero = rs.getInt("idgenero");
+                String sqlUpdate = "UPDATE peliculas SET titulo=?,argumento=?,duracion=?,idgenero=? WHERE idpelicula=?";
+                PreparedStatement stmu = conn.prepareStatement(sqlUpdate);
+                stmu.setString(1,titulo);
+                stmu.setString(2,argumento);
+                stmu.setInt(3,duracion);
+                stmu.setInt(4,idgenero);
+                stmu.setInt(5,idpelicula);
+                stmu.executeUpdate();
+                stmu.close();
+            }
+            stm.close();
+            conn.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

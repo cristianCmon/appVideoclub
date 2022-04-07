@@ -18,6 +18,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.InputMethodEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
@@ -138,7 +139,49 @@ public class EmpleadoController extends PadreController{
         paneformulariopeliculas.getChildren().addAll(panef.getAnchor());
 
         ArrayList<Button> botn = panef.getBotones();
-        botn.get(0).onMouseClickedProperty();
+        botn.get(0).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                if(botn.get(2).isDisabled()){
+                    botn.get(2).setDisable(false);
+                } else {
+                    botn.get(2).setDisable(true);
+                }
+            }
+        });
+        botn.get(1).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                String titulo = anchorview.getPaneform().getTextos().get(1).getText();
+                Integer duracion = Integer.valueOf(anchorview.getPaneform().getTextos().get(3).getText());
+                String genero = anchorview.getPaneform().getTextos().get(4).getText();
+
+                vc.crearPelicula(titulo,duracion,genero);
+                cargarPeliculas();
+            }
+        });
+
+        botn.get(3).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                for (int i = 0; i < anchorview.getPaneform().getTextos().size(); i++) {
+                    anchorview.getPaneform().getTextos().get(i).setText("");
+                }
+            }
+        });
+
+        botn.get(2).setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Integer idpelicula = Integer.valueOf(anchorview.getPaneform().getTextos().get(0).getText());
+                String titulo = anchorview.getPaneform().getTextos().get(1).getText();
+                String argumento = anchorview.getPaneform().getTextos().get(2).getText();
+                Integer duracion = Integer.valueOf(anchorview.getPaneform().getTextos().get(3).getText());
+                String genero = anchorview.getPaneform().getTextos().get(4).getText();
+                vc.editarPelicula(idpelicula,titulo,argumento,duracion,genero);
+                cargarPeliculas();
+            }
+        });
     }
     @FXML
     protected void cargarDatosAlquileres(){

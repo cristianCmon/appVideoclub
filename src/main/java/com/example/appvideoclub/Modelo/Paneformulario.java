@@ -88,6 +88,11 @@ public class Paneformulario {
     public void setRow(int row) {
         this.row = row;
     }
+
+    public ArrayList<TextField> getTextos() {
+        return textos;
+    }
+
     public void refresh(){
 
 
